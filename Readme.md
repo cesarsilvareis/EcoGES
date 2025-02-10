@@ -1,4 +1,10 @@
-# SIRS 2022-23 - EcoGes Challenge 1
+# A Household Appliance Energy Manager
+ 
+> *Segurança Informática em Redes e Sistemas (SIRS 2022-23)*
+
+> *Challenge 1 of the EcoGES business context (a new energy autonomous feature)* 
+
+> *Security issue: data separation among distinct entities* 
 
 ## Authors
 
@@ -6,9 +12,20 @@
 * **César Reis** - *Everything* - [cesarsilvareis](https://github.com/cesarsilvareis)
 * **Henrique Vinagre** - *Everything* - [Henrique Vinagre](https://github.com/henriquevinagre)
 
+## Our Last Words
+The aim of this project was to explore possible attack vectors and design a solution to meet a specific security issue, analysing the attacker model and making assumptions.
+For those permisses, a business context was created from scratch, involving setting up all (virtual) network infrastructure and developing a Flask web application server.
+On top of that, we formulated firewall rules and established secure channels (details in the [report](./report.pdf)).
+
 ## General Information
 
-This solution implements database information separation through a cryptography protocol. For instance, if you need to store various critical information within a single, so that each piece should only be accessible by a specific entity in a secure manner, this solution is just right.
+This solution implements database information separation through a cryptography protocol. For instance, if you need to store various critical information within a single (maybe physical, serverful) database, so that each piece of data should only be accessible by a specific entity in a secure manner, this solution is just right for you!
+
+### Take as an Example  
+
+**The EcoGES scenario**: A new feature lives in rumors inside the company -- a real-time monitor system embedded in the client electricity contracts that can balance the energy consumed by users' household appliances and that is produced by assigned solar panels.
+
+**The Problem**: Several departments operate in the internal scenario with access to all stored user data (including critical for themselves).
 
 ### Built With
 
@@ -97,5 +114,15 @@ Running the application is simple:
 Do note that you will need the necessary keys/certificates for running the programs with TLS.
 
 ## Demo
-This is a simple project. Try to create a new user and go to monthly invoices. Notice that you can't see some of the data!
+This is a simple project focused on the demonstration of our cryptographic solution. Try to create a new user and go to monthly invoices. Notice that you can't see some of the data (as a regular user)!
+
+**Link:**
+https://youtu.be/klFIMNZivCc.
+
+## Possible Future Increments
+
+- An actual Key Distributed Center (KDC) hosted by an internal machine to not rely on the assumption that the application server could not be compromissed (in a DMZ).
+- Robust authentication with Kerberos protocol or key regeneration by the KDC to ensure perfect foward secrecy (PFS).
+
+
 
