@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block title %} Login {% endblock %}
+
+{% block body %}
+
+<h1 class="fw-bold p-5" style="font-size: 5rem;color: rgb(72, 199, 46);" align="center">EcoGes</h1>
+
+<div class="vh-50 d-flex justify-content-center align-items-center">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="border border-3 border-success" style="border-radius: 1rem;">
+                    <div class="card bg-light">
+                        <div class="card-body p-5">
+                            <form class="mb-3 mt-md-4" action="{{ url_for('login') }}" method="POST">
+                                <h2 class="fs-1 fw-bold mb-5" align="center">Login</h2>
+
+                                <!-- Login up error messages -->
+                                {% include 'flash_messages.html' %}
+                                <div class="mb-3">
+                                    <label for="username" class="form-label fs-5">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="username">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label fs-5">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="*******">
+                                </div>
+
+                                <button class="btn btn-success btn-lg btn-block" type="submit">Sign In</button>
+                            </form>
+
+                            <div>
+                                <p class="mb-0 text-center">Don't have an account? 
+                                    <a href="{{ url_for('sign_up') }}"class="text-success fw-bold">Sign Up</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

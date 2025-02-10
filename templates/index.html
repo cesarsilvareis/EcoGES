@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} EcoGes Homepage {% endblock %}
+
+{% block body %}
+
+<!-- Login success message -->
+{% include 'flash_messages.html' %}
+
+<div class="m-3 p-3 bg-dark text-white rounded">
+    <a href="/" style="font-size: 2.75rem;;" class="btn bg-transparent text-white btn-lg" role="button">EcoGes</a>
+    <div class="container pt-2 d-flex justify-content-around">
+        <a href="/appliances" style="background-color: rgb(62, 190, 111)" class="btn btn-primary btn-lg" href="#" role="button">Household Appliances</a>
+        <a href="/panels" style="background-color: rgb(52, 173, 189)" class="btn btn-primary btn-lg" href="#" role="button">Solar Panels</a>
+        <a href="/invoice" style="background-color: rgb(72, 80, 197)" class="btn btn-primary btn-lg" href="#" role="button">Monthly Invoice</a>
+    </div>
+</div>
+
+<br><br><br><br><br><br><br><br><br><br>
+<div class="well text-center"><h1>Welcome to <i>EcoGes</i> <b>{{ session['username'] }}</b> !</hi></div>
+
+{% endblock %}
+

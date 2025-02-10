@@ -1,0 +1,18 @@
+<form action="{{ url_for('update_monthly_invoice') }}" method="POST">
+    <div class="form-group">
+        <!--<input type="number" required step="1" min="0" max="1" name="monthly_invoices_plan">-->
+        <select class="form-select" aria-label="Plan" name="monthly_invoices_plan">
+            <option selected value="" style="display:none">Choose a plan</option>
+            <option value="0">Flat</option>
+            <option value="1">Bi-Hourly</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Bank Acccount:</label>
+        <input type="text" required class="form-control" name="bank_account_id" value="">
+    </div>
+    <br></br>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Update</button>
+    </div>
+</form>

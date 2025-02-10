@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="m-3 p-3 bg-dark text-white rounded">
+    <a href="/" style="font-size: 2.75rem;;" class="btn bg-transparent text-white btn-lg" role="button">EcoGes</a>
+    <div class="container pt-2 d-flex justify-content-around">
+        <a href="/appliances" style="background-color: rgb(62, 190, 111)" class="btn btn-primary btn-lg" role="button">Household Appliances</a>
+        <a href="/panels" style="background-color: rgb(52, 173, 189)" class="btn btn-primary btn-lg" role="button">Solar Panels</a>
+        <a href="/invoice" style="background-color: rgb(72, 80, 197)" class="btn btn-primary btn-lg" role="button">Monthly Invoice</a>
+    </div>
+</div>
+
+{% include 'flash_messages.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class ="m-3 p-3 bg-light text-dark rounded">
+                <div class="mb-5">
+                    <h2>See your <b>Monthly Invoices</b><button type="button" class="btn btn-warning float-end" data-bs-toggle="modal" data-bs-target="#modaledit">Edit</button></h2>
+                </div>
+                {% if monthly_invoices_info %}
+                <table class="table table-hover table-bordered border border-2 border-success">
+                    <thead class="table-dark">
+                        <tr class="text-center">
+                            <th>Month</th>
+                            <th>Consumed Energy</th>
+                            <th>Plan</th>
+                            <th>Taxes</th>
+                            {% if bank_account %}
+                            <th>Bank Account Associated</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ monthly_invoices_info[1] }}</td>
+                            <td>{{ monthly_invoices_info[2] }}</td>
+                            <td>{{ "no permission" if not session["is_admin"] else "Flat" if monthly_invoices_info[3] == "0" else "Bi-hourly" }}</td>
+                            <td>{{ "no permission" if not session["is_admin"] else monthly_invoices_info[4] }}</td>
+                            {% if bank_account %}
+                            <td>{{ bank_account }}</td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+                {% else %}
+                    <p> Error: not possible to receive database data</p>
+                {% endif %}
+            </div>
+
+            <div id="modaledit" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Update Information</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('update_monthly_invoice') }}" method="POST">
+                                <div class="form-group">
+                                    <select class="form-select" aria-label="Plan" name="monthly_invoice_plan">
+                                        <option selected value="" style="display:none">Choose a plan</option>
+                                        <option value="0">Flat</option>
+                                        <option value="1">Bi-Hourly</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <div class="form-group">
+                                    <select class="form-select" aria-label="Bank Account" name="bank_account_id">
+                                        <option selected value="" style="display:none">Choose a bank</option>
+                                        <option value="Bank1">Bank 1</option>
+                                        <option value="Bank2">Bank 2</option>
+                                        <option value="Bank3">Bank 3</option>
+                                    </select>
+                                </div>
+                                <br></br>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

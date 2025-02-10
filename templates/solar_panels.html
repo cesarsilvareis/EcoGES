@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="m-3 p-3 bg-dark text-white rounded">
+    <a href="/" style="font-size: 2.75rem;;" class="btn bg-transparent text-white btn-lg" role="button">EcoGes</a>
+    <div class="container pt-2 d-flex justify-content-around">
+        <a href="/appliances" style="background-color: rgb(62, 190, 111)" class="btn btn-primary btn-lg" role="button">Household Appliances</a>
+        <a href="/panels" style="background-color: rgb(52, 173, 189)" class="btn btn-primary btn-lg" role="button">Solar Panels</a>
+        <a href="/invoice" style="background-color: rgb(72, 80, 197)" class="btn btn-primary btn-lg" role="button">Monthly Invoice</a>
+    </div>
+</div>
+
+{% include 'flash_messages.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class ="m-3 p-3 bg-light text-dark rounded">
+                <h2>Manage your <b>Solar Panels</b><button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#mymodal">Add new solar panels</button></h2>
+                {% if panels %}
+                <table class="table table-hover table-dark">
+                    <thead>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Energy Production Rate</th>
+                        <th>Energy Produced</th>
+                        <th>Up Time</th>
+                        <th>Active</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        {% for record in panels %}
+                        <tr>
+                            <td>{{ record[0] }}</td>
+                            <td>{{ record[1] }}</td>
+                            <td>{{ record[2] }}</td>
+                            <td>{{ record[3] }}</td>
+                            <td>{{ record[4] }}</td>
+                            <td>{{ record[5] }}</td>
+                            <td>
+                                <a href="/panels/update/{{ record[0] }}" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modaledit{{ record[0] }}">Edit</a>
+                                <form action="/panels/delete" method="post">
+                                    <input type="hidden" name="panel_name" value="{{ record[1] }}">
+                                    <button name="panel_id" value="{{ record[0] }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete {{ record[1] }} (id {{ record[0] }}) ?!')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <div id="modaledit{{ record[0] }}" class="modal fade" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Update Information</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ url_for('update_panel') }}" method="POST">
+                                        <div class="form-group">
+                                            <input type="hidden" required name="panel_id" value="{{ record[0] }}">
+                                            <label class="form-control-label" for="edit_name">New name</label>
+                                            <input type="text" required minlength="2" maxlength="40" class="form-control" name="panel_name" value="{{ record[1] }}" id="edit_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="edit_production">Energy Production Rate</label>
+                                            <input type="number" required step="0.01" min="0" max="2000000000" class="form-control" name="panel_production_rate" value="{{ record[2] }}" id="edit_production">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-check-label" for="edit_active">
+                                                {% if record[5] %}
+                                                <input type="checkbox" class="form-check-input" name="panel_active" id="edit_active" checked>
+                                                {% else %}
+                                                <input type="checkbox" class="form-check-input" name="panel_active" id="edit_active">
+                                                {% endif %}
+                                            Active</label>
+                                        </div>
+                                        <br></br>
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" type="submit">Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </table>
+                {% else %}
+                    <p> Error: not possible to receive database data</p>
+                {% endif %}
+            </div>
+
+            <div id="mymodal" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Assign a new Solar Panel</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('add_panel') }}" method="POST">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="add_id">ID</label>
+                                    <input type="number" required step="1.0" min="0" max="2000000000" class="form-control" name="panel_id" id="add_id">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="add_name">Name</label>
+                                    <input type="text" required minlength="2" maxlength="40" class="form-control" name="panel_name" id="add_name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="add_production_rate">Energy Production Rate</label>
+                                    <input type="number" required step="0.01" min="0" max="2000000000" class="form-control" name="panel_production_rate" id="add_production_rate">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-check-label" for="add_active">
+                                        <input type="checkbox" class="form-check-input" name="panel_active" id="add_active">
+                                    Active</label>
+                                </div>
+                                <br></br>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Add solar panel</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

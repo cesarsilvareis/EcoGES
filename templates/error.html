@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Error :(</title>
+    </head>
+    <body style="padding:2%">
+        {% if DEBUG or ('active' in session and session['is_admin']) %}
+        <h2>The following error occurred:</h2>
+        <p>{{ error_message }}</p>
+        
+        {% else %}
+        
+        <h2>Sorry, a problem occurred.</h2>
+
+        {% endif %}
+        <p>
+            <a href="{{ url_for('home') }}">
+                <button type="button" style="background:#b5b5b5;color:white;cursor: pointer;">Try returning to Homepage</button> 
+            </a>
+        </p>
+    </body>
+</html>
